@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>学校人事信息管理系统</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet" />
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">学校人事信息管理系统</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">教职工</a></li>
+            <li class="layui-nav-item"><a href="">课程</a></li>
+            <li class="layui-nav-item"><a href="">科研项目</a></li>
+            <li class="layui-nav-item"><a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a href="">邮件管理</a>
+                    </dd>
+                    <dd>
+                        <a href="">消息管理</a>
+                    </dd>
+                    <dd>
+                        <a href="">授权管理</a>
+                    </dd>
+                </dl></li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item"><a href="javascript:;"> 管理员 </a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a href="">基本资料</a>
+                    </dd>
+                    <dd>
+                        <a href="">安全设置</a>
+                    </dd>
+                </dl></li>
+            <li class="layui-nav-item"><a href="">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed"><a class=""
+                                                               href="javascript:;">所有人员</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="javascript:;">列表一</a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;">列表二</a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;">列表三</a>
+                        </dd>
+                        <dd>
+                            <a href="">超链接</a>
+                        </dd>
+                    </dl></li>
+                <li class="layui-nav-item"><a href="javascript:;">解决方案</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="javascript:;">列表一</a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;">列表二</a>
+                        </dd>
+                        <dd>
+                            <a href="">超链接</a>
+                        </dd>
+                    </dl></li>
+                <li class="layui-nav-item"><a href="">发布科研任务</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <table id="demo" lay-filter="test"></table>
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+        </script>
+    </div>
+
+
+    <!--点击后才显示-->
+    <div class="layui-row" id="popUpdateTest" style="display:none;">
+        <div class="layui-col-md10">
+            <form class="layui-form layui-from-pane" lay-filter="aaa" action="" style="margin-top:20px">
+                <!--不加id，更新时找不到id，更新会失败, 添加hidden属性隐藏-->
+                <div class="layui-form-item" hidden="true">
+                    <label class="layui-form-label">编号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="id" placeholder="请输入编号" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">名字</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" required lay-verify="required" placeholder="请输入名字" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="sex" value="男" title="男">
+                        <input type="radio" name="sex" value="女" title="女" checked>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">年龄</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="age" required lay-verify="required" placeholder="请输入年龄" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">职称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" required lay-verify="required" placeholder="请输入职称" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">大学</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" required lay-verify="required" placeholder="请输入大学" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="email" required lay-verify="required" placeholder="请输入邮箱" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">部门</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="department" required lay-verify="required" placeholder="请输入部门" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">健康情况</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" placeholder="请输入健康情况" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" style="margin-top:40px">
+                    <div class="layui-input-block">
+                        <button class="layui-btn  layui-btn-submit " lay-submit="" lay-filter="demo11">确认修改</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © 薛铖勇 周成杰 罗鉴 黄逸焕 - 数据库大作业
+    </div>
+</div>
+
+
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function() {
+        var element = layui.element;
+
+    });
+</script>
+
+<script>
+    layui.use(['table', 'jquery', 'layer', 'form', 'laypage'], function(){
+        var table = layui.table;
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var laypage = layui.laypage;
+
+        //表格数据
+        table.render({
+            elem: '#demo'
+            ,url: '/staff/show' //数据接口
+            ,request: {
+                pageName: 'curr' //页码的参数名称，默认：page
+                ,limitName: 'nums' //每页数据量的参数名，默认：limit
+            }
+            ,cols: [
+                [ //表头
+                {type: 'checkbox', fixed: 'left'}
+                ,{field: 'id', title: 'ID', sort: true, fixed: 'left'}
+                ,{field: 'name', title: '姓名'}
+                ,{field: 'gender', title: '性别'}
+                ,{field: 'age', title: '年龄'}
+                ,{field: 'title', title: '职称'}
+                ,{field: 'university', title: '大学'}
+                ,{field: 'email', title: '邮箱'}
+                ,{field: 'department', title: '部门'}
+                ,{field: 'health', title: '健康情况'}
+                , {title: '操作', minWidth: 50, templet: '#currentTableBar', fixed: "right", align: "center"}
+                ]
+            ]
+            ,page: true //开启分页
+            ,toolbar: 'default'//工具图标
+        });
+
+        laypage.render({
+            elem: 'demo' //注意，这里的 test1 是 ID，不用加 # 号
+            ,count: 15 //数据总数，从服务端得到
+        });
+
+
+        //监听头工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id)
+                , data = checkStatus.data; //获取选中的数据
+            switch (obj.event) {
+                case 'add':
+                    layer.msg('添加');
+                    adduser();
+                    break;
+                case 'update':
+                    if (data.length === 0) {
+                        layer.msg('请选择一行');
+                    } else if (data.length > 1) {
+                        layer.msg('只能同时编辑一个');
+                    } else {
+                        layer.alert('编辑 [id]：' + checkStatus.data[0].id);
+                        var data1 = data[0];
+                        console.log("新data1为：", data1);
+                        updateuser(obj, data1);
+                    }
+                    break;
+                case 'delete':
+                    if (data.length === 0) {
+                        layer.msg('请选择一行');
+                    } else {
+                        console.log("data[0].id为", data[0].id);
+                        layer.msg('删除');
+                        deleteuser(data[0].id);
+                    }
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            var id = data.id;//选中行的id
+            console.log("data数据为：", data);
+            console.log("id数据为：", data.id);
+            if (obj.event === 'edit') {
+                // layer.alert('编辑行：<br>' + JSON.stringify(data))
+                updateuser(obj, data);
+            } else if (obj.event === 'delete') {
+                layer.confirm('确认删除?', function (index) {
+                    // obj.del();
+                    layer.close(index);
+                    deleteuser(id);
+                });
+            }
+        });
+
+        //添加用户
+        function adduser() {
+            layer.open({
+                //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                type: 1,
+                title: "修改职工信息",
+                area: ['420px', '330px'],
+                content: $("#popUpdateTest")//引用的弹出层的页面层的方式加载修改界面表单
+            });
+            console.log("测试输出");
+            //监听提交
+            form.on('submit(demo11)', function (message) {
+                // console.log(data.field);
+                var field = message.field;
+                console.log(field);
+                $.ajax({
+                    type: "post",
+                    url: "custumerTable/insert",
+                    data: JSON.stringify(field),
+                    contentType: 'application/json',
+                    datatype: "json",
+                    success: function (resp) {
+                        console.log(resp);
+                        layer.closeAll();//关闭所有的弹出层
+                        if (resp.code == 0) {
+                            layer.msg("添加成功", {icon: 6});
+                            //刷新数据
+                            $(".layui-laypage-btn").click();
+                        } else {
+                            layer.msg("添加失败", {icon: 5});
+                        }
+                    }
+                });
+                return false
+            });
+
+        }
+
+        //编辑更新用户
+        function updateuser(obj, data) {
+
+            //回填数据到表单
+            form.val("aaa", {
+                "id": data.id
+                , "name": data.name
+                , "sex": data.sex
+                , "tell": data.tell
+                , "addr": data.addr
+            });
+            layer.open({
+                //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                type: 1,
+                title: "修改职工信息",
+                area: ['420px', '330px'],
+                content: $("#popUpdateTest")//引用的弹出层的页面层的方式加载修改界面表单
+            });
+
+            console.log("修改原始数据为：", data);
+            console.log("id类型", typeof data.id);
+            console.log("obj为：", obj);
+            form.on('submit(demo11)', function (massage) {
+
+                console.log("message为：", massage);
+                console.log(massage.field);
+                var data1 = massage.field;
+
+                $.ajax({
+                    type: "post",
+                    url: "/custumerTable/update",
+                    data: JSON.stringify(massage.field),
+                    // data: { id: data.id, name: data1.name, sex: data1.sex, tell: data1.tell, addr: data1.addr },
+                    contentType: 'application/json',
+                    datatype: "json",
+                    success: function (resp) {
+                        console.log(resp);
+                        layer.closeAll();//关闭所有的弹出层
+                        if (resp.code == 0) {
+                            layer.msg("修改成功", {icon: 6});
+                            //刷新数据
+                            $(".layui-laypage-btn").click();
+                        } else {
+                            layer.msg("修改失败", {icon: 5});
+                        }
+                    }
+                })
+                return false
+
+            })
+        }
+
+
+        //删除用户
+        function deleteuser(idList) {
+
+            var url = "custumerTable/delete?idList=" + idList;
+            console.log("url为：", url);
+            $.ajax({
+                type: "post",
+                url: url,
+                contentType: 'application/json',
+                datatype: "json",
+                success: function (resp) {
+                    console.log(resp);
+                    if (resp.code == 0) {
+                        layer.msg("删除成功", {icon: 6});
+                        //刷新数据
+                        $(".layui-laypage-btn").click();
+                    } else {
+                        layer.msg("删除失败", {icon: 5});
+                    }
+                }
+            });
+            return false;
+        }
+
+    });
+</script>
+</body>
+</html>
+
+
+
+
