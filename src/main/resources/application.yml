@@ -3,6 +3,8 @@ server:
   tomcat:
     uri-encoding: utf-8
 spring:
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://106.14.139.144:3306/school?characterEncoding=utf-8
@@ -13,9 +15,10 @@ spring:
     content-type: text/html
     encoding: UTF-8
     mode: HTML5
-    prefix: classpath:/templates/
+    prefix: classpath:/templates/user/
     suffix: .html
 
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true

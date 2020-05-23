@@ -1,4 +1,4 @@
-package com.example.demo1.configuration;
+package com.example.demo1;
 
 
 import org.springframework.boot.SpringApplication;
