@@ -3,7 +3,9 @@ package com.example.demo1.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.example.demo1.entities.Staff;
 import com.example.demo1.entities.User;
+import com.example.demo1.service.StaffService;
 import com.example.demo1.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +30,9 @@ public class LoginController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private StaffService staffService;
 
     @RequestMapping(value="/", method = RequestMethod.GET)
     @ApiOperation(value="验证登录接口",notes="通过此接口可获得当前登录用户id")
@@ -94,6 +99,9 @@ public class LoginController {
             user.setPassword(password);
             userService.save(user);
             logger.info(user.toString() + " saved to the repo");
+            Staff staff = new Staff();
+            staff.setId(id);
+            staffService.save(staff);
         }
         res.put("message", "OK");
         return res.toJSONString();

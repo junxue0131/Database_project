@@ -13,8 +13,8 @@ import java.io.Serializable;
 @Data
 public class Staff implements Serializable  {
     @TableId(type = IdType.INPUT)
-    @TableField("userId")
-    private long id;
+    @TableField("id")
+    private int id;
 
     private String name;
     private String gender;
@@ -30,7 +30,7 @@ public class Staff implements Serializable  {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
