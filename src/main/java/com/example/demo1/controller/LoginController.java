@@ -69,7 +69,7 @@ public class LoginController {
         } else {
             user.setUserid(Integer.parseInt(id));
             user.setPassword(newPassword);
-            userService.update(user,new QueryWrapper<User>()
+            userService.update(user, new QueryWrapper<User>()
                     .eq("userId",id)
             );
             logger.info(user.toString() + " updated");
