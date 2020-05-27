@@ -5,14 +5,19 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.example.demo1.entities.AppProject;
+import com.example.demo1.entities.Project;
 import com.example.demo1.service.AppProjectService;
+import com.example.demo1.service.ProjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @ClassName AppProjectController
@@ -27,6 +32,9 @@ import java.util.List;
 public class AppProjectController extends ApiController {
     @Resource
     private AppProjectService appProjectService;
+
+    @Resource
+    private ProjectService projectService;
 
     @GetMapping("/AppProjectList")
     @ApiOperation(value = "获取科研申请表列表接口", notes="可通过该接口拉取所有AppProject表数据")
@@ -54,7 +62,7 @@ public class AppProjectController extends ApiController {
 
 
     @PostMapping("/change")
-    @ApiOperation(value = "更改科研申请表信息接口", notes="可通过该接口更改科研申请表信息，id字段为唯一区分标识")
+    @ApiOperation(value = "更改科研申请表信息接口", notes="管理员和教授可通过该接口更改科研申请表信息进行科研项目申请的审批")
     public R change(@RequestBody AppProject AppProject) {
         return success(appProjectService.update(AppProject,new QueryWrapper<AppProject>()
                 .eq("projectId",AppProject.getProjectid())
@@ -67,5 +75,25 @@ public class AppProjectController extends ApiController {
     public R selectOne(@PathVariable Serializable staffId) {
         return success(this.appProjectService.list(new QueryWrapper<AppProject>()
                 .eq("staffId", staffId)));
+    }
+
+    @GetMapping("/professorSelect/{professorId}")
+    @ApiOperation(value = "查询教授下属科研申请表信息接口", notes="可通过该接口拉取特定教授项目下的科研申请表的AppProject表数据")
+    public R professorSelect(@PathVariable Serializable professorId) {
+        List<Project> t = this.projectService.list(new QueryWrapper<Project>()
+                .eq("leader", professorId));
+        Set<Integer> tt = new HashSet<>();
+        for (Project i : t) {
+            tt.add(i.getId());
+        }
+        List<AppProject> ttt = new LinkedList<>();
+        for (Integer i : tt) {
+            AppProject appProject = this.appProjectService.getOne(new QueryWrapper<AppProject>()
+                    .eq("projectId", i));
+            if (appProject != null) {
+                ttt.add(appProject);
+            }
+        }
+        return success(ttt);
     }
 }
