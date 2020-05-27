@@ -83,6 +83,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 // 如果有允许匿名的url，填在下面
 //                .antMatchers().permitAll()
+                .antMatchers("/changePwd").permitAll()
+                .antMatchers("/home").permitAll()
                 .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
                         "/swagger-resources", "/swagger-resources/configuration/security",
                         "/swagger-ui.html", "/webjars/**").permitAll()
@@ -92,12 +94,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/staff/**").permitAll()
                 .antMatchers("/course/**").permitAll()
                 .antMatchers("/project/**").permitAll()
+                .antMatchers("/appProject/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // 设置登陆页
                 .formLogin().loginPage("/login")
                 // 设置登陆成功页
-                .defaultSuccessUrl("/").permitAll()
+                .defaultSuccessUrl("/home").permitAll()
                 // 设置失败页
                 .failureUrl("/login/error")
                 // 自定义登陆用户名和密码参数，默认为username和password

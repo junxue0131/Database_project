@@ -5,6 +5,9 @@ server:
 spring:
   main:
     allow-bean-definition-overriding: true
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://106.14.139.144:3306/school?characterEncoding=utf-8

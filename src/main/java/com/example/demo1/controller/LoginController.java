@@ -12,11 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.spring.web.json.Json;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -34,13 +31,16 @@ public class LoginController {
     @Resource
     private StaffService staffService;
 
-    @RequestMapping(value="/", method = RequestMethod.GET)
+    @RequestMapping(value="/home", method = RequestMethod.GET)
     @ApiOperation(value="验证登录接口",notes="通过此接口可获得当前登录用户id")
     public String showHome() {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getDetails());
         JSONObject res = new JSONObject();
+        User role = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUserid, name), false);
         res.put("message", "OK");
         res.put("username", name);
+        res.put("role", role.getUserrole());
         return res.toJSONString();
     }
 
@@ -64,15 +64,16 @@ public class LoginController {
     @RequestMapping(value="/changePwd", method = {RequestMethod.POST})
     @ApiOperation(value = "用户密码更改接口", notes="用户可通过该接口进行密码更改")
     @ResponseBody
-    public String addNewUser (@RequestParam String oldPassword, @RequestParam String newPassword, User user) {
-        String id = SecurityContextHolder.getContext().getAuthentication().getName();
+    public String addNewUser (@RequestParam int id, @RequestParam String oldPassword, @RequestParam String newPassword, User user) {
+//        requests获取不到cookie，故取消
+//        String id = SecurityContextHolder.getContext().getAuthentication().getName();
         User check = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUserid, id),false);
         JSONObject res = new JSONObject();
         if (!oldPassword.equals(check.getPassword())) {
             res.put("error message", "password_false");
             return res.toJSONString();
         } else {
-            user.setUserid(Integer.parseInt(id));
+            user.setUserid(id);
             user.setPassword(newPassword);
             userService.update(user, new QueryWrapper<User>()
                     .eq("userId",id)
