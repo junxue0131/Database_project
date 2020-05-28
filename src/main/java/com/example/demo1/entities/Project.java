@@ -3,9 +3,9 @@ package com.example.demo1.entities;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import java.sql.Date;
 
 /**
  * @ClassName Project
@@ -24,15 +24,14 @@ public class Project {
     @TableField("teamSize")
     private int teamsize;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    private Date datebegin;
+    @TableField("dateBegin")
+    private String datebegin;
 
     @TableField("namePublication")
     private String namepublication;
 
     @TableField("datePublication")
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    private Date datepublication;
+    private String datepublication;
 
     private String schedule;
 
@@ -68,11 +67,11 @@ public class Project {
         this.teamsize = teamsize;
     }
 
-    public Date getDatebegin() {
+    public String getDatebegin() {
         return datebegin;
     }
 
-    public void setDatebegin(Date datebegin) {
+    public void setDatebegin(String datebegin) {
         this.datebegin = datebegin;
     }
 
@@ -84,11 +83,11 @@ public class Project {
         this.namepublication = namepublication;
     }
 
-    public Date getDatepublication() {
+    public String getDatepublication() {
         return datepublication;
     }
 
-    public void setDatepublication(Date datepublication) {
+    public void setDatepublication(String datepublication) {
         this.datepublication = datepublication;
     }
 

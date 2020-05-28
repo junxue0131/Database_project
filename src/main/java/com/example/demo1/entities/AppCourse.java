@@ -2,9 +2,8 @@ package com.example.demo1.entities;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.sql.Time;
 
 /**
  * @ClassName AppCourse
@@ -22,8 +21,7 @@ public class AppCourse {
     private int staffid;
 
     @TableField("submitTime")
-    @DateTimeFormat(pattern="hh:mm:ss")
-    private Date submittime;
+    private String submittime;
 
     public int getCourseid() {
         return courseid;
@@ -41,11 +39,11 @@ public class AppCourse {
         this.staffid = staffid;
     }
 
-    public Date getSubmittime() {
+    public String getSubmittime() {
         return submittime;
     }
 
-    public void setSubmittime(Date submittime) {
+    public void setSubmittime(String submittime) {
         this.submittime = submittime;
     }
 }
