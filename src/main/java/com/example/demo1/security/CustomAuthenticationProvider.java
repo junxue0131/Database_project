@@ -1,41 +1,61 @@
 package com.example.demo1.security;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.example.demo1.entities.User;
+import com.example.demo1.service.UserService;
+import com.example.demo1.utils.GrantedAuthorityImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.GrantedAuthority;
 
-@Component
+import javax.annotation.Resource;
+import java.util.ArrayList;
+
+
 public class CustomAuthenticationProvider implements AuthenticationProvider {
+
     @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private UserService userService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        // 获取用户输入的用户名和密码
-        String inputName = authentication.getName();
-        String inputPassword = authentication.getCredentials().toString();
-        WebAuthenticationDetails details = (WebAuthenticationDetails) authentication.getDetails();
+        // 获取认证的用户名 & 密码
+        String name = authentication.getName();
+        String password = authentication.getCredentials().toString();
 
-        // userDetails为数据库中查询到的用户信息
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(inputName);
-
-        if (!userDetails.getPassword().equals(inputPassword)) {
-            throw new DisabledException("密码错误");
+        // 认证逻辑
+        User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUserid, name), false);
+        //检测用户是否存在
+        if (user == null) {
+            throw new BadCredentialsException("there is no this user");
         }
+        //监测密码是否正确
+        if (password.equals(user.getPassword())) {
+            // 这里设置权限和角色
+            ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+            if (user.getUserrole().equals("administrator")) {
+                authorities.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
+            } else if (user.getUserrole().equals("professor")) {
+                authorities.add(new GrantedAuthorityImpl("ROLE_PROF"));
+            } else {
+                authorities.add(new GrantedAuthorityImpl("ROLE_STAFF"));
+            }
 
-        return new UsernamePasswordAuthenticationToken(userDetails, inputPassword, userDetails.getAuthorities());
+            // 生成令牌
+            Authentication auth = new UsernamePasswordAuthenticationToken(name, password, authorities);
+            return auth;
+        }else {
+            throw new BadCredentialsException("error password");
+        }
     }
 
-
+    // 是否可以提供输入类型的认证服务
     @Override
     public boolean supports(Class<?> authentication) {
-        // 这里不要忘记，和UsernamePasswordAuthenticationToken比较
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 }

@@ -31,42 +31,15 @@ public class LoginController {
     @Resource
     private StaffService staffService;
 
-    @RequestMapping(value="/home", method = RequestMethod.GET)
-    @ApiOperation(value="验证登录接口",notes="通过此接口可获得当前登录用户id")
-    public String showHome() {
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getDetails());
-        JSONObject res = new JSONObject();
-        User role = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUserid, name), false);
-        res.put("message", "OK");
-        res.put("username", name);
-        res.put("role", role.getUserrole());
-        return res.toJSONString();
-    }
-
     @RequestMapping(value="/login", method = RequestMethod.POST)
     @ApiOperation(value="登录接口",notes="通过此接口可进行用户登录")
-    public void Login(@RequestParam String username, @RequestParam String password,
-                      @RequestParam(name="remember-me", required = false) String remember) {
+    public void Login(@RequestParam String userId, @RequestParam String password) {
     }
-
-    @RequestMapping(value = "/login/error", method = RequestMethod.GET)
-    @ApiOperation(value="报错信息接口",notes="当登录失败时，将自动重定向至该页面获取错误信息")
-    public String loginError(HttpServletRequest request, HttpServletResponse response) {
-        response.setContentType("application/json;charset=UTF-8");
-        Exception exception = (Exception) request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
-        JSONObject res = new JSONObject();
-        res.put("error message", exception.getMessage());
-        return res.toJSONString();
-    }
-
 
     @RequestMapping(value="/changePwd", method = {RequestMethod.POST})
     @ApiOperation(value = "用户密码更改接口", notes="用户可通过该接口进行密码更改")
     @ResponseBody
     public String addNewUser (@RequestParam int id, @RequestParam String oldPassword, @RequestParam String newPassword, User user) {
-//        requests获取不到cookie，故取消
-//        String id = SecurityContextHolder.getContext().getAuthentication().getName();
         User check = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUserid, id),false);
         JSONObject res = new JSONObject();
         if (!oldPassword.equals(check.getPassword())) {
@@ -111,24 +84,5 @@ public class LoginController {
     @RequestMapping(value="/logout", method = {RequestMethod.POST})
     @ApiOperation(value = "注销登录接口", notes="用户可通过该接口注销")
     public void logout () {
-
-    }
-
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    @PreAuthorize("hasPermission('/admin','r')")
-    public String printAdminR() {
-        return "如果你看见这句话，说明你访问/admin路径具有r权限";
-    }
-
-    @RequestMapping(value = "/admin/c", method = RequestMethod.GET)
-    @PreAuthorize("hasPermission('/admin','c')")
-    public String printAdminC() {
-        return "如果你看见这句话，说明你访问/admin路径具有c权限";
-    }
-
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public String printUser() {
-        return "如果你看见这句话，说明你有ROLE_USER角色";
     }
 }
