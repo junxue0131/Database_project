@@ -2,6 +2,7 @@ package com.example.demo1.security;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo1.utils.GrantedAuthorityImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.parameters.P;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,10 +27,12 @@ public class TokenAuthenticationService {
 
     // JWT生成方法
     static void addAuthentication(HttpServletResponse response, Authentication user) {
+        Object[] a = user.getAuthorities().toArray();
+
         // 生成JWT
         String JWT = Jwts.builder()
                 // 保存权限（角色）
-                .claim("authorities", "ROLE_ADMIN, ROLE_PROF, ROLE_STAFF")
+                .claim("authorities", ((GrantedAuthorityImpl)a[0]).getAuthority())
                 // 用户名写入标题
                 .setSubject(user.getName())
                 // 有效期设置

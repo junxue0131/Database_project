@@ -2,8 +2,8 @@ package com.example.demo1.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
@@ -31,6 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/swagger-resources/**");
         web.ignoring().antMatchers("/webjars/**");
         //swagger-ui end
+
+        //对注册接口放行
+        web.ignoring().antMatchers("/add");
     }
 
 
@@ -41,10 +45,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 // 对请求进行认证
                 .authorizeRequests()
-                // 所有 / 的所有请求 都放行
+                // 所有 / 的所有请求都放行
                 .antMatchers("/").permitAll()
-                // 所有 /login 的POST请求 都放行
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                // 所有 /login 的请求都放行
+                .antMatchers("/login").permitAll()
                 // 权限检查
                 .antMatchers("/hello").hasAuthority("AUTH_WRITE")
                 // 角色检查
