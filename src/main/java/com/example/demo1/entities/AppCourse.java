@@ -3,15 +3,7 @@ package com.example.demo1.entities;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 
-import java.sql.Time;
 
-/**
- * @ClassName AppCourse
- * @Description TODO
- * @Author Xue
- * @Date 2020/5/27 22:22
- * @Version 1.0
- **/
 @TableName("appCourse")
 public class AppCourse {
     @TableField("courseId")

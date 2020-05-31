@@ -21,13 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @ClassName AppProjectController
- * @Description TODO
- * @Author Xue
- * @Date 2020/5/25 23:15
- * @Version 1.0
- **/
+
 @RestController
 @RequestMapping("appProject")
 @Api(tags = "科研申请表接口", description = "提供科研申请表表相关的 Rest API")

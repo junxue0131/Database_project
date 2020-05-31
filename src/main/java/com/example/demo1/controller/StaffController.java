@@ -9,6 +9,7 @@ import com.example.demo1.entities.Staff;
 import com.example.demo1.service.StaffService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,9 +24,9 @@ public class StaffController extends ApiController {
     @Resource
     private StaffService staffService;
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/test")
-    @ApiOperation(value = "测试接口", notes="可通过该接口拉取所有staff表数据")
+    @ApiOperation(value = "测试接口", notes="可通过该接口拉取所有staff表数据——权限：管理员")
     public String test() {
         List<Staff> StaffList = this.staffService.list();
         JSONObject res = new JSONObject(true);
@@ -34,33 +35,36 @@ public class StaffController extends ApiController {
         return res.toJSONString();
     }
 
+//    //被注册功能替代，弃用
+//    @PreAuthorize("authentication.name.equals(#staffId)")
+//    @PostMapping("/add")
+//    @ApiOperation(value = "添加职工信息接口", notes="可通过该接口添加职工信息——权限：仅能自己添加自己=")
+//    public R add(@RequestBody Staff staff, @RequestParam String staffId) {
+//        return success(this.staffService.save(staff));
+//    }
 
-    @PostMapping("/add")
-    @ApiOperation(value = "添加职工信息接口", notes="可通过该接口添加职工信息")
-    public R add(@RequestBody Staff staff) {
-        return success(this.staffService.save(staff));
-    }
-
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/delete/{id}")
-    @ApiOperation(value = "删除职工信息接口", notes="可通过该接口删除职工信息")
+    @ApiOperation(value = "删除职工信息接口", notes="可通过该接口删除职工信息——权限：管理员")
     public R delete(@PathVariable Serializable id) {
         return success(this.staffService.removeById(id));
     }
 
 
+    @PreAuthorize("authentication.name.equals(#staffId) or hasRole('ADMIN')")
     @PostMapping("/change")
-    @ApiOperation(value = "更改职工信息接口", notes="可通过该接口更改职工信息，id字段为唯一区分标识")
-    public R change(@RequestBody Staff staff) {
+    @ApiOperation(value = "更改职工信息接口", notes="可通过该接口更改职工信息，id字段为唯一区分标识——权限：管理员可操作全部数据，普通用户仅能操作自己的数据")
+    public R change(@RequestBody Staff staff, @RequestParam String staffId) {
         return success(this.staffService.update(staff,new QueryWrapper<Staff>()
-                .eq("id",staff.getId())
+                .eq("id", staffId)
         ));
     }
 
 
+    @PreAuthorize("authentication.name.equals(#id) or hasRole('ADMIN')")
     @GetMapping("/select/{id}")
-    @ApiOperation(value = "查询职工信息接口", notes="可通过该接口拉取指定用户id的staff表数据")
-    public R selectOne(@PathVariable Serializable id) {
-        return success(this.staffService.getById(id));
+    @ApiOperation(value = "查询职工信息接口", notes="可通过该接口拉取指定用户id的staff表数据——权限：管理员可操作全部数据，普通用户仅能操作自己的数据")
+    public R selectOne(@PathVariable String id) {
+        return success(this.staffService.getById(Integer.parseInt(id)));
     }
 }

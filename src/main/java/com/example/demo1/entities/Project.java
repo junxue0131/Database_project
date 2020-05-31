@@ -4,16 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
-import java.sql.Timestamp;
-import java.sql.Date;
 
-/**
- * @ClassName Project
- * @Description TODO
- * @Author Xue
- * @Date 2020/5/24 19:43
- * @Version 1.0
- **/
 public class Project {
     @TableId(type = IdType.INPUT)
     @TableField("id")

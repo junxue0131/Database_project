@@ -5,13 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.sql.Timestamp;
 
-/**
- * @ClassName StaffCourse
- * @Description TODO
- * @Author Xue
- * @Date 2020/5/28 16:05
- * @Version 1.0
- **/
+
 @TableName("staffCourse")
 public class StaffCourse {
     @TableField("courseId")

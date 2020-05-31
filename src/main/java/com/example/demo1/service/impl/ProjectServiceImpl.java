@@ -9,13 +9,7 @@ import com.example.demo1.service.CourseService;
 import com.example.demo1.service.ProjectService;
 import org.springframework.stereotype.Service;
 
-/**
- * @ClassName ProjectServiceImpl
- * @Description TODO
- * @Author Xue
- * @Date 2020/5/24 19:51
- * @Version 1.0
- **/
+
 @Service("ProjectService")
 public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> implements ProjectService {
 

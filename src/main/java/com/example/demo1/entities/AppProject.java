@@ -3,13 +3,7 @@ package com.example.demo1.entities;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 
-/**
- * @ClassName AppProject
- * @Description TODO
- * @Author Xue
- * @Date 2020/5/25 23:10
- * @Version 1.0
- **/
+
 @TableName("appProject")
 public class AppProject {
     @TableField("projectId")
