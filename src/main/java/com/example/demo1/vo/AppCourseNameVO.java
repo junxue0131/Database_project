@@ -16,5 +16,8 @@ public class AppCourseNameVO implements Serializable {
     @TableField("submitTime")
     private String submittime;
 
-    private String name;
+    private String staffName;
+
+    private String courseName;
+
 }
