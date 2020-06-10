@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.example.demo1.entities.AppCourse;
 import com.example.demo1.service.AppCourseService;
+import com.example.demo1.vo.AppCourseNameVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,7 +27,7 @@ public class AppCourseController extends ApiController {
     @GetMapping("/AppCourseList")
     @ApiOperation(value = "获取课程申请表列表接口", notes="可通过该接口拉取所有AppCourse表数据——权限：管理员")
     public String test() {
-        List<AppCourse> AppCourseList = this.appCourseService.list();
+        List<AppCourseNameVO> AppCourseList = this.appCourseService.selectAll();
         JSONObject res = new JSONObject(true);
         res.put("message", "OK");
         res.put("data", AppCourseList);
@@ -53,7 +54,6 @@ public class AppCourseController extends ApiController {
     @GetMapping("/select/{staffId}")
     @ApiOperation(value = "查询课程申请表信息接口", notes="可通过该接口拉取指定课程申请表所有者id的AppCourse表数据——权限：管理员可操作所有数据，普通用户只能对自己的数据操作")
     public R selectOne(@PathVariable String staffId) {
-        return success(this.appCourseService.list(new QueryWrapper<AppCourse>()
-                .eq("staffId", staffId)));
+        return success(this.appCourseService.selectOne(Integer.parseInt(staffId)));
     }
 }
