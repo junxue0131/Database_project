@@ -8,6 +8,7 @@ import com.example.demo1.entities.AppProject;
 import com.example.demo1.entities.Project;
 import com.example.demo1.service.AppProjectService;
 import com.example.demo1.service.ProjectService;
+import com.example.demo1.vo.AppProjectNameVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,7 +37,7 @@ public class AppProjectController extends ApiController {
     @GetMapping("/AppProjectList")
     @ApiOperation(value = "获取科研申请表列表接口", notes="可通过该接口拉取所有AppProject表数据——权限：只有管理员可使用该接口")
     public String test() {
-        List<AppProject> AppProjectList = this.appProjectService.list();
+        List<AppProjectNameVO> AppProjectList = this.appProjectService.selectAll();
         JSONObject res = new JSONObject(true);
         res.put("message", "OK");
         res.put("data", AppProjectList);
@@ -72,9 +73,8 @@ public class AppProjectController extends ApiController {
     @PreAuthorize("authentication.name.equals(#staffId) or hasRole('ADMIN')")
     @GetMapping("/select/{staffId}")
     @ApiOperation(value = "查询科研申请表信息接口", notes="可通过该接口拉取指定科研申请表所有者id的AppProject表数据——权限：普通用户只能拉取属于自己的，管理员可任意操作")
-    public R selectOne(@PathVariable Serializable staffId) {
-        return success(this.appProjectService.list(new QueryWrapper<AppProject>()
-                .eq("staffId", staffId)));
+    public R selectOne(@PathVariable String staffId) {
+        return success(this.appProjectService.selectOne(Integer.parseInt(staffId)));
     }
 
 
@@ -88,12 +88,11 @@ public class AppProjectController extends ApiController {
         for (Project i : t) {
             tt.add(i.getId());
         }
-        List<AppProject> ttt = new LinkedList<>();
+        List<AppProjectNameVO> ttt = new LinkedList<>();
         for (Integer i : tt) {
-            AppProject appProject = this.appProjectService.getOne(new QueryWrapper<AppProject>()
-                    .eq("projectId", i));
+            List<AppProjectNameVO> appProject = this.appProjectService.selectOne(i);
             if (appProject != null) {
-                ttt.add(appProject);
+                ttt.addAll(appProject);
             }
         }
         return success(ttt);
