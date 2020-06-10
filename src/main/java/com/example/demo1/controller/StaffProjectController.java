@@ -27,7 +27,6 @@ public class StaffProjectController extends ApiController {
     @GetMapping("/select/{staffId}")
     @ApiOperation(value = "查询职工科研表信息接口", notes="可通过该接口拉取指定职工科研表所有者id的StaffProject表数据——权限：管理员可操作全部数据，普通用户仅能操作自己的数据")
     public R selectOne(@PathVariable String staffId) {
-        return success(this.StaffProjectService.list(new QueryWrapper<StaffProject>()
-                .eq("staffId", staffId)));
+        return success(this.StaffProjectService.selectOne(Integer.parseInt(staffId)));
     }
 }
