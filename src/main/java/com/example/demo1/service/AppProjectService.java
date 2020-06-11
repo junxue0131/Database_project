@@ -10,4 +10,6 @@ public interface AppProjectService extends IService<AppProject> {
     List<AppProjectNameVO> selectAll();
 
     List<AppProjectNameVO> selectOne(int staffId);
+
+    List<AppProjectNameVO> selectProject(int projectId);
 }

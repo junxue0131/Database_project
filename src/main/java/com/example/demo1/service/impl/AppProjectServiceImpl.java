@@ -21,5 +21,9 @@ public class AppProjectServiceImpl extends ServiceImpl<AppProjectMapper, AppProj
     public List<AppProjectNameVO> selectOne(int staffId) {
         return this.baseMapper.selectone(staffId);
     }
+
+    public List<AppProjectNameVO> selectProject(int projectId) {
+        return this.baseMapper.selectproject(projectId);
+    }
 }
 

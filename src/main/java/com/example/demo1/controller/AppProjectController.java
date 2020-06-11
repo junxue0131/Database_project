@@ -90,7 +90,7 @@ public class AppProjectController extends ApiController {
         }
         List<AppProjectNameVO> ttt = new LinkedList<>();
         for (Integer i : tt) {
-            List<AppProjectNameVO> appProject = this.appProjectService.selectOne(i);
+            List<AppProjectNameVO> appProject = this.appProjectService.selectProject(i);
             if (appProject != null) {
                 ttt.addAll(appProject);
             }

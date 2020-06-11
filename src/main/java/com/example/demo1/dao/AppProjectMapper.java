@@ -23,4 +23,11 @@ public interface AppProjectMapper extends BaseMapper<AppProject> {
             "where appProject.staffId = staff.id and appProject.projectId = project.id) as t" +
             " where t.staffId = #{staffId}")
     List<AppProjectNameVO> selectone(@Param("staffId") int staffId);
+
+    @Select("select * from " +
+            "(select appProject.*, staff.name as staffName, project.name as projectName" +
+            " from appProject, staff, project " +
+            "where appProject.staffId = staff.id and appProject.projectId = project.id) as t" +
+            " where t.projectId = #{projectId}")
+    List<AppProjectNameVO> selectproject(@Param("projectId") int proejctId);
 }
