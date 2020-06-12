@@ -14,7 +14,7 @@ public class AppProjectNameVO {
     @TableField("submitTime")
     private String submittime;
 
-    private boolean agreement;
+    private Integer agreement;
 
     private String staffName;
 
