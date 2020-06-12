@@ -15,7 +15,7 @@ public class AppProject {
     @TableField("submitTime")
     private String submittime;
 
-    private boolean agreement;
+    private Integer agreement;
 
     public int getProjectid() {
         return projectid;
@@ -41,11 +41,11 @@ public class AppProject {
         this.submittime = submittime;
     }
 
-    public boolean isAgreement() {
+    public Integer getAgreement() {
         return agreement;
     }
 
-    public void setAgreement(boolean agreement) {
+    public void setAgreement(Integer agreement) {
         this.agreement = agreement;
     }
 }

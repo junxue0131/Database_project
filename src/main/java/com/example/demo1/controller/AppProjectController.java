@@ -48,8 +48,6 @@ public class AppProjectController extends ApiController {
     @PostMapping("/add")
     @ApiOperation(value = "添加科研申请表列表接口", notes="可通过该接口添加AppProject表数据——权限：认证过的角色均可使用")
     public R add(@RequestBody AppProject appProject) {
-        Boolean a = null;
-        appProject.setAgreement(a);
         return success(appProjectService.save(appProject));
     }
 
