@@ -48,6 +48,8 @@ public class AppProjectController extends ApiController {
     @PostMapping("/add")
     @ApiOperation(value = "添加科研申请表列表接口", notes="可通过该接口添加AppProject表数据——权限：认证过的角色均可使用")
     public R add(@RequestBody AppProject appProject) {
+        Boolean a = null;
+        appProject.setAgreement(a);
         return success(appProjectService.save(appProject));
     }
 
@@ -61,7 +63,7 @@ public class AppProjectController extends ApiController {
     }
 
 
-    @PreAuthorize("(authentication.name.equals(#staffId) and hasRole('PROF')) or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('PROF') or hasRole('ADMIN')")
     @PostMapping("/change")
     @ApiOperation(value = "更改科研申请表信息接口", notes="管理员和教授可通过该接口更改科研申请表信息进行科研项目申请的审批——权限：管理员更改所有，教授更改属于自己的")
     public R change(@RequestBody AppProject AppProject, @RequestParam String staffId) {
